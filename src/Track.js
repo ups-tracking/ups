@@ -37,25 +37,29 @@ const Track = () => {
   return (
     <div className="d-flex flex-column min-vh-100 bg-light p-2">
       {/* Navbar */}
-      <Navbar bg="grey" variant="light" expand="lg">
-        <Container>
-          <Navbar.Brand href="/">
-            <img
+ <Navbar bg="white" expand="lg" className={`py-2 ${window.innerWidth < 992 ? '' : 'sticky-top'}`}>
+            <Container>
+              <Navbar.Brand href="/">
+                {/* logo */}
+                <img
               src="https://res.cloudinary.com/drbiup2zg/image/upload/v1745030247/ups_yfdjww.png"
               alt="UPS Logo"
-              style={{ height: '50px', objectFit: 'contain' }}
+              style={{ height: '70px', objectFit: 'contain' }}
             />
-          </Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#shipping">Shipping</Nav.Link>
-            <Nav.Link href="#tracking">Tracking</Nav.Link>
-            <Nav.Link href="#products">Products & Services</Nav.Link>
-            <Nav.Link href="#store">The UPS Store</Nav.Link>
-          </Nav>
-          <Button variant="warning">Log In</Button>
-        </Container>
-      </Navbar>
-
+              </Navbar.Brand>
+              <Navbar.Toggle aria-controls="main-nav" />
+              <Navbar.Collapse id="main-nav">
+                <Nav className="me-auto">
+                  <Nav.Link href="#shipping">Shipping</Nav.Link>
+                  <Nav.Link href="#tracking">Tracking</Nav.Link>
+                  <Nav.Link href="#products">Products & Services</Nav.Link>
+                  <Nav.Link href="#store">The UPS Store</Nav.Link>
+                </Nav>
+                <Button variant="warning">Log In</Button>
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
+          
       {/* Main Content */}
       <Container fluid className="flex-grow-1 py-4">
         <Row>
