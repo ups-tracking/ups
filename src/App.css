@@ -1,0 +1,34 @@
+.footer {
+  background-color: #351C15 !important;
+  color: white;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer h5 {
+  color: white;
+  margin-bottom: 15px;
+}
+
+.footer .social-icons img {
+  width: 24px;
+  height: 24px;
+}
+
+.footer-bottom {
+  font-size: 0.85rem;
+}
+
+.footer-bottom a {
+  margin: 0 8px;
+}
+body, html, #root {
+  height: 100%;
+}

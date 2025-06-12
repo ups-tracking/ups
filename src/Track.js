@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, Form, Button, Container, Row, Col, ProgressBar } from 'react-bootstrap';
-
+import './App.css'
 
 const Track = () => {
   const [trackingNumber, setTrackingNumber] = useState('');
@@ -12,7 +12,7 @@ const Track = () => {
     setShipment(null);
     setError('');
     try {
-      const res = await fetch(`http://localhost:5005/api/shipments/track/${trackingNumber}`);
+      const res = await fetch(`https://ups-api-f8j7.onrender.com/api/shipments/track/${trackingNumber}`);
       const data = await res.json();
       if (res.ok) {
         setShipment(data);
@@ -35,14 +35,14 @@ const Track = () => {
   };
 
   return (
-    <div>
-      <Navbar bg="grey" variant="grey" expand="lg">
+    <div className="d-flex flex-column min-vh-100 bg-light p-2">
+      {/* Navbar */}
+      <Navbar bg="grey" variant="light" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="/">
             <img
               src="https://res.cloudinary.com/drbiup2zg/image/upload/v1745030247/ups_yfdjww.png"
               alt="UPS Logo"
-              className="img-fluid"
               style={{ height: '50px', objectFit: 'contain' }}
             />
           </Navbar.Brand>
@@ -52,14 +52,16 @@ const Track = () => {
             <Nav.Link href="#products">Products & Services</Nav.Link>
             <Nav.Link href="#store">The UPS Store</Nav.Link>
           </Nav>
-          <Button variant="warning" className="ms-auto">Log In</Button>
+          <Button variant="warning">Log In</Button>
         </Container>
       </Navbar>
 
-      <Container className="mt-4">
+      {/* Main Content */}
+      <Container fluid className="flex-grow-1 py-4">
         <Row>
+          {/* Left Section */}
           <Col md={8}>
-            <div className="p-4 border rounded">
+            <div className="p-4 border rounded bg-white shadow-sm">
               <h4>Track</h4>
               <Form>
                 <Form.Group className="mb-3" controlId="trackingNumber">
@@ -71,7 +73,10 @@ const Track = () => {
                     onChange={(e) => setTrackingNumber(e.target.value)}
                   />
                 </Form.Group>
-                <p>Need to Change a Delivery? You can access available options by tracking the package and then selecting "Change My Delivery".</p>
+                <p>
+                  Need to Change a Delivery? You can access available options by tracking the package
+                  and then selecting "Change My Delivery".
+                </p>
                 <Button variant="warning" onClick={handleTrack}>Track</Button>
               </Form>
               {error && <p className="text-danger mt-3">{error}</p>}
@@ -91,29 +96,37 @@ const Track = () => {
                     />
                   )}
                   {shipment.status && (
-                    <ProgressBar now={getProgress(shipment.status)} label={`${shipment.status} (${getProgress(shipment.status)}%)`} className="mt-3" />
+                    <ProgressBar
+                      now={getProgress(shipment.status)}
+                      label={`${shipment.status} (${getProgress(shipment.status)}%)`}
+                      className="mt-3"
+                    />
                   )}
                 </div>
               )}
             </div>
           </Col>
+
+          {/* Right Section */}
           <Col md={4}>
-            <div className="p-4 border rounded">
+            <div className="p-4 border rounded bg-white shadow-sm mb-4">
               <h5>Track by Reference Number</h5>
               <p><a href="#help">Help</a></p>
               <p>Import Tracking Numbers</p>
               <p>Other Tracking Services</p>
             </div>
-            <div className="p-4 border rounded mt-4">
+            <div className="p-4 border rounded bg-white shadow-sm">
               <h5>Stay Safe - Avoid Fraud and Scams</h5>
               <p>Received a text, call, or email that seems suspicious? Don’t respond to it.</p>
               <Button variant="outline-primary">Tips to Avoid Fraud</Button>
             </div>
           </Col>
         </Row>
+
+        {/* Bottom Section */}
         <Row className="mt-4">
           <Col>
-            <div className="p-4 border rounded">
+            <div className="p-4 border rounded bg-white shadow-sm">
               <h5>Recently Tracked</h5>
               <p><a href="#login">Log in or Sign up to view your recently tracked shipments.</a></p>
             </div>
