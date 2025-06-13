@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ProgressBar } from 'react-bootstrap';
 
+const API_URL = process.env.REACT_APP_API_URL || 'https://ups-api-f8j7.onrender.com';
+
 const Admin = () => {
   const [formData, setFormData] = useState({
     sender: '',
@@ -18,7 +20,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchShipments = async () => {
       try {
-        const res = await axios.get('http://localhost:5005/api/shipments');
+        const res = await axios.get(`${API_URL}/api/shipments`);
         const normalizedShipments = res.data.map(shipment => ({
           ...shipment,
           additionalImages: shipment.additionalImages || []
@@ -49,7 +51,7 @@ const Admin = () => {
         data.append(key, formData[key]);
       }
 
-      const res = await axios.post('http://localhost:5005/api/shipments', data, {
+      const res = await axios.post(`${API_URL}/api/shipments`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setShipments(prev => [...prev, { ...res.data, additionalImages: [] }]);
@@ -57,7 +59,7 @@ const Admin = () => {
       setFormData({ sender: '', recipient: '', origin: '', destination: '', image: null });
     } catch (err) {
       console.error(err);
-      alert('Error creating shipment');
+      alert('Error creating shipment: ' + err.response?.data?.error || err.message);
     }
   };
 
@@ -65,11 +67,11 @@ const Admin = () => {
     e.preventDefault();
     if (!newImage || !selectedShipment) return alert('Please select an image and a shipment');
 
-    const formData = new FormData();
-    formData.append('image', newImage);
-
     try {
-      const res = await axios.post(`http://localhost:5005/api/shipments/${selectedShipment._id}/add-image`, formData, {
+      const formData = new FormData();
+      formData.append('image', newImage);
+
+      const res = await axios.post(`${API_URL}/api/shipments/${selectedShipment._id}/add-image`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setShipments(prev => 
@@ -86,7 +88,7 @@ const Admin = () => {
   const handleStatusUpdate = async (shipmentId, newStatus) => {
     try {
       const res = await axios.patch(
-        `http://localhost:5005/api/shipments/${shipmentId}/status`,
+        `${API_URL}/api/shipments/${shipmentId}/status`,
         { status: newStatus },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -94,7 +96,7 @@ const Admin = () => {
       alert('Status updated to ' + newStatus);
     } catch (err) {
       console.error(err);
-      alert('Failed to update status');
+      alert('Error updating status: ' + err.response?.data?.error || err.message);
     }
   };
 
@@ -110,7 +112,7 @@ const Admin = () => {
 
   return (
     <div className="container mt-4">
-      <h2>Create Shipment (Admin)</h2>
+      <h3>Create Shipment (Admin)</h3>
       <form onSubmit={handleSubmit} encType="multipart/form-data" className="w-50">
         <input
           type="text"
@@ -160,7 +162,7 @@ const Admin = () => {
       </form>
 
       {shipments.length > 0 && (
-        <div className="mt-4">
+        <div className="mt-5">
           <h3>Manage Shipments</h3>
           {shipments.map((shipment) => (
             <div key={shipment._id} className="mt-3 p-3 border border-success rounded">
@@ -177,7 +179,7 @@ const Admin = () => {
                   <img
                     src={shipment.image}
                     alt="shipment"
-                    style={{ maxWidth: '200px', marginTop: '10px', borderRadius: '8px' }}
+                    style={{ maxWidth: '200px', marginTop: '10px', borderRadius: '5px' }}
                   />
                 </div>
               )}
@@ -189,7 +191,7 @@ const Admin = () => {
                       key={index}
                       src={img}
                       alt={`additional-${index}`}
-                      style={{ maxWidth: '200px', marginTop: '10px', borderRadius: '8px' }}
+                      style={{ maxWidth: '200px', marginTop: '10px', borderRadius: '5px' }}
                     />
                   ))}
                 </div>
@@ -198,7 +200,7 @@ const Admin = () => {
 
               <div className="mt-3">
                 <h5>Add New Image</h5>
-                <form onSubmit={handleAddImage} encType="multipart/form-data">
+                <form onSubmit={handleAddImage}>
                   <input
                     type="file"
                     name="newImage"
@@ -212,6 +214,7 @@ const Admin = () => {
                     onClick={(e) => {
                       e.preventDefault();
                       setSelectedShipment(shipment);
+                      handleAddImage(e);
                     }}
                   >
                     Add Image
