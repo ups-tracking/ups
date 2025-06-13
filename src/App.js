@@ -9,12 +9,12 @@ import Footer from './Footer.js';
 const App = () => {
   return (
     <Router>
-      <div >
+      <div>
        
 
         <Routes>
           <Route path="/" element={<Track />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/portal" element={<Admin />} />
         </Routes>
         <Footer/>
       </div>

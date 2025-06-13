@@ -101,9 +101,10 @@ const Track = () => {
                   )}
                   {shipment.status && (
                     <ProgressBar
+                    variant="success"
                       now={getProgress(shipment.status)}
                       label={`${shipment.status} (${getProgress(shipment.status)}%)`}
-                      className="mt-3"
+                      className="mt-4"
                     />
                   )}
                 </div>
