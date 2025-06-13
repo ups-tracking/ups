@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, Form, Button, Container, Row, Col, ProgressBar } from 'react-bootstrap';
-import './App.css'
+import './App.css';
 
 const Track = () => {
   const [trackingNumber, setTrackingNumber] = useState('');
@@ -34,32 +34,46 @@ const Track = () => {
     }
   };
 
+  // Format the createdAt timestamp for display
+  const formatDateTime = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'UTC', // Adjust if you want local time instead of UTC
+    });
+  };
+
   return (
     <div className="d-flex flex-column min-vh-100 bg-light p-2">
       {/* Navbar */}
- <Navbar bg="white" expand="lg" className={`py-2 ${window.innerWidth < 992 ? '' : 'sticky-top'}`}>
-            <Container>
-              <Navbar.Brand href="/">
-                {/* logo */}
-                <img
+      <Navbar bg="white" expand="lg" className={`py-2 ${window.innerWidth < 992 ? '' : 'sticky-top'}`}>
+        <Container>
+          <Navbar.Brand href="/">
+            <img
               src="https://res.cloudinary.com/drbiup2zg/image/upload/v1745030247/ups_yfdjww.png"
               alt="UPS Logo"
               style={{ height: '70px', objectFit: 'contain' }}
             />
-              </Navbar.Brand>
-              <Navbar.Toggle aria-controls="main-nav" />
-              <Navbar.Collapse id="main-nav">
-                <Nav className="me-auto">
-                  <Nav.Link href="#shipping">Shipping</Nav.Link>
-                  <Nav.Link href="#tracking">Tracking</Nav.Link>
-                  <Nav.Link href="#products">Products & Services</Nav.Link>
-                  <Nav.Link href="#store">The UPS Store</Nav.Link>
-                </Nav>
-                <Button variant="warning">Log In</Button>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
-          
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="main-nav" />
+          <Navbar.Collapse id="main-nav">
+            <Nav className="me-auto">
+              <Nav.Link href="#shipping">Shipping</Nav.Link>
+              <Nav.Link href="#tracking">Tracking</Nav.Link>
+              <Nav.Link href="#products">Products & Services</Nav.Link>
+              <Nav.Link href="#store">The UPS Store</Nav.Link>
+            </Nav>
+            <Button variant="warning">Log In</Button>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
       {/* Main Content */}
       <Container fluid className="flex-grow-1 py-4">
         <Row>
@@ -91,6 +105,7 @@ const Track = () => {
                   <p><strong>Recipient:</strong> {shipment.recipient}</p>
                   <p><strong>Origin:</strong> {shipment.origin}</p>
                   <p><strong>Destination:</strong> {shipment.destination}</p>
+                  <p><strong>Created:</strong> {formatDateTime(shipment.createdAt)}</p>
                   {shipment.image && (
                     <img
                       src={shipment.image}
@@ -101,7 +116,7 @@ const Track = () => {
                   )}
                   {shipment.status && (
                     <ProgressBar
-                    variant="success"
+                    variant='success'
                       now={getProgress(shipment.status)}
                       label={`${shipment.status} (${getProgress(shipment.status)}%)`}
                       className="mt-4"
