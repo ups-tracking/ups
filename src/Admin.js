@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ProgressBar } from 'react-bootstrap';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5005';
+const API_URL = process.env.REACT_APP_API_URL || 'https://ups-api-f8j7.onrender.com';
 
 const Admin = () => {
   const [formData, setFormData] = useState({
