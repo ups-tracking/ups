@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ProgressBar } from 'react-bootstrap';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://ups-api-f8j7.onrender.com';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5005';
 
 const Admin = () => {
   const [formData, setFormData] = useState({
@@ -156,9 +156,9 @@ const Admin = () => {
           accept="image/*"
           onChange={handleChange}
           className="form-control mb-3"
-          required
+         
         />
-        <button type="submit" className="btn btn-success">Submit</button>
+        <button type="submit" className="btn btn-success mb-3">Submit</button>
       </form>
 
       {shipments.length > 0 && (
